@@ -17,6 +17,9 @@ import android.app.Activity;
 public class Main extends CordovaPlugin  implements PaymentResultWithDataListener {
   public static final String MAP_KEY_ERROR_CODE = "code";
   public static final String MAP_KEY_ERROR_DESC = "description";
+  public static final String RAZORPAY_PAYMENT_ID = "razorpay_payment_id";
+  public static final String RAZORPAY_SIGNATURE= "razorpay_signature";
+  public static final String RAZORPAY_ORDER_ID = "razorpay_order_id";
   public CallbackContext cc;
 
   @Override
@@ -40,7 +43,11 @@ public class Main extends CordovaPlugin  implements PaymentResultWithDataListene
 
   @Override
   public void onPaymentSuccess(String razorpayPaymentId, PaymentData paymentData) {
-    cc.success(razorpayPaymentId);
+    JSONObject paymentsuccess = new JSONObject();
+	    paymentsuccess.put(RAZORPAY_PAYMENT_ID, razorpayPaymentId);
+	    paymentsuccess.put(RAZORPAY_SIGNATURE, paymentData.getSignature());
+	    paymentsuccess.put(RAZORPAY_ORDER_ID, paymentData.getOrderId());
+	    cc.success(paymentsuccess);
   } 
 
   @Override
